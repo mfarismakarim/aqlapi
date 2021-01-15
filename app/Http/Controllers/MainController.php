@@ -115,7 +115,7 @@ class MainController extends Controller
             // }
             $model->save();
 
-            event(new NewDonatorHasRegisteredEvent($model));
+            // event(new NewDonatorHasRegisteredEvent($model));
             return response()->json(["success" => true, "message" => "Data Berhasil Disimpan"]);
         } catch(Exception $err){ 
             return response()->json(["success" => false, "message" => $err]); 
