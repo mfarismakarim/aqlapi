@@ -18,6 +18,7 @@ $router->get('/', function () use ($router) {
 });
 
 $router->get('/new', 'MainController@new');
+$router->get('/wablast', 'MainController@waBlast');
 $router->get('/getDonation', 'MainController@getDonation');
 $router->get('/getPaidDonation', 'MainController@getPaidDonation');
 $router->get('/getCampaign', 'MainController@getCampaign');
