@@ -21,5 +21,10 @@ class NotificationNewDonatorListener implements ShouldQueue
     {
         $email = $event->donator->email;
         Mail::to($email)->send(new DonationMail());
+        if(Mail::failures()){
+            foreach(Mail::failures() as $email_address) {
+                echo " - $email_address <br />";
+            }
+        }
     }
 }
