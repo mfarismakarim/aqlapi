@@ -12,9 +12,17 @@
 | and give it the Closure to call when that URI is requested.
 |
 */
+use App\Mail\DonationMail;
+use Illuminate\Support\Facades\Mail;
 
 $router->get('/', function () use ($router) {
     return $router->app->version();
+});
+$router->get('/email', function () use ($router) {
+    $email = 'mfmakarim@gmail.com';
+    Mail::to($email)->send(new DonationMail());
+
+    return new DonationMail();
 });
 
 $router->get('/new', 'MainController@new');
