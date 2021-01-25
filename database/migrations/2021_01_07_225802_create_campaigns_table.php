@@ -15,8 +15,10 @@ class CreateCampaignsTable extends Migration
     {
         Schema::create('campaigns', function (Blueprint $table) {
             $table->id();
+            $table->unsignedInteger('id')->change();
             $table->string('campaign_name');
             $table->unsignedBigInteger('target');
+            $table->unsignedBigInteger('collected');
             $table->date('deadline');
         });
     }
