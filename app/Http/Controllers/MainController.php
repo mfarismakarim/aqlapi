@@ -30,9 +30,13 @@ class MainController extends Controller
         $model = new Donation;
         $model->id_campaign = $request->get('id_campaign');
         $model->name = $request->get('name');
-        $model->email = $request->get('email');
+        $model->email = $request->get('email', "no-email");
         $model->phone_number = $request->get('phone_number');
         $model->amount = $request->get('amount');
+        $item = (object)[
+            "qrcode_url" => $request->get('qrcode_url', null),
+            "account_number" => $request->get('account_number', null)
+        ];
         try { 
             $check_models = Donation::whereIdCampaign($model->id_campaign)->orderBy('created_at', 'Desc')->get();
             $check_phone = $check_models->where('phone_number', $model->phone_number)->first();
@@ -46,8 +50,11 @@ class MainController extends Controller
                 if($differ < 300) return response()->json(["success" => false, "message" => "Anda Sudah Melakukan Pendaftaran Dengan Email Yang Sama 5 Menit Yang Lalu, Silahkan Tunggu 5 Menit Lagi Bila Ingin Melakukan Pendaftaran Ulang"]);
             }
             $model->save();
-
-            // event(new NewDonatorHasRegisteredEvent($model));
+            
+            if(filter_var($model->email, FILTER_VALIDATE_EMAIL)){
+                event(new NewDonatorHasRegisteredEvent($model, $item));    
+            }
+            
             return response()->json(["success" => true, "message" => "Data Berhasil Disimpan"]);
         } catch(Exception $err){ 
             return response()->json(["success" => false, "message" => $err]); 
@@ -102,9 +109,40 @@ class MainController extends Controller
         try {
             $donation->save();
             $campaign->save();
+            $item = (object)[];
+            if(filter_var($donation->email, FILTER_VALIDATE_EMAIL)){
+                event(new NewDonatorHasRegisteredEvent($donation, $item));    
+            }
             return response()->json(["success" => true, "message" => "Berhasil Merubah Status Pembayaran"]);
         } catch(Exception $err){
             return response()->json(["success" => false, "message" => $err]);
+        }
+    }
+
+    public function setUnPaidDonation(Request $request){
+        $token = $request->get('token', null);
+        if($token !== 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvbG9naW4iLCJpYXQiOjE2MTA0MjgzNzgsImV4cCI6MTYxMDQzMTk3OCwibmJmIjoxNjEwNDI4Mzc4LCJqdGkiOiJWSTFEZkVORjZWc3luNHB2Iiwic3ViIjoxMDAxLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.awgkdKJarKGTxP_0HIldNI7CnG_xtJoxnzhALuFGIPc') return response()->json('Unauthorized');
+        $id = $request->get('id');
+        $donation = Donation::find($id);
+        if($donation === null) return response()->json(["success" => false, "message" => "Data Donasi Tidak Ditemukan"]);
+        if($donation->paid === 1){
+            $donation->paid = false;
+            $campaign = Campaign::find($donation->id_campaign);
+            if($campaign === null) return response()->json(["success" => false, "message" => "Data Campaign Tidak Ditemukan"]);
+            $campaign->collected -= $donation->amount;
+            try {
+                $donation->save();
+                $campaign->save();
+                $item = (object)[];
+                if(filter_var($donation->email, FILTER_VALIDATE_EMAIL)){
+                    event(new NewDonatorHasRegisteredEvent($donation, $item));    
+                }
+                return response()->json(["success" => true, "message" => "Berhasil Merubah Status Pembayaran"]);
+            } catch(Exception $err){
+                return response()->json(["success" => false, "message" => $err]);
+            }
+        } else {
+            return response()->json(["success" => false, "message" => "Donasi Belum Terbayar"]);
         }
     }
 
@@ -143,8 +181,7 @@ class MainController extends Controller
         }
     }
 
-
-
+    // JWT Auth Route
 
     public function addDonationAuth(Request $request){
         $model = new Donation;
@@ -153,6 +190,10 @@ class MainController extends Controller
         $model->email = $request->get('email');
         $model->phone_number = $request->get('phone_number');
         $model->amount = $request->get('amount');
+        $item = (object)[
+            "qrcode_url" => $request->get('qrcode_url', null),
+            "account_number" => $request->get('account_number', null)
+        ];
         try { 
             $check_models = Donation::whereIdCampaign($model->id_campaign)->orderBy('created_at', 'Desc')->get();
             $check_phone = $check_models->where('phone_number', $model->phone_number)->first();
@@ -167,7 +208,9 @@ class MainController extends Controller
             }
             $model->save();
 
-            // event(new NewDonatorHasRegisteredEvent($model));
+            if(filter_var($model->email, FILTER_VALIDATE_EMAIL)){
+                event(new NewDonatorHasRegisteredEvent($model, $item));    
+            }
             return response()->json(["success" => true, "message" => "Data Berhasil Disimpan"]);
         } catch(Exception $err){ 
             return response()->json(["success" => false, "message" => $err]); 
@@ -214,9 +257,38 @@ class MainController extends Controller
         try {
             $donation->save();
             $campaign->save();
+            $item = (object)[];
+            if(filter_var($donation->email, FILTER_VALIDATE_EMAIL)){
+                event(new NewDonatorHasRegisteredEvent($donation, $item));    
+            }
             return response()->json(["success" => true, "message" => "Berhasil Merubah Status Pembayaran"]);
         } catch(Exception $err){
             return response()->json(["success" => false, "message" => $err]);
+        }
+    }
+
+    public function setUnPaidDonationAuth(Request $request){
+        $id = $request->get('id');
+        $donation = Donation::find($id);
+        if($donation === null) return response()->json(["success" => false, "message" => "Data Donasi Tidak Ditemukan"]);
+        if($donation->paid === 1){
+            $donation->paid = false;
+            $campaign = Campaign::find($donation->id_campaign);
+            if($campaign === null) return response()->json(["success" => false, "message" => "Data Campaign Tidak Ditemukan"]);
+            $campaign->collected -= $donation->amount;
+            try {
+                $donation->save();
+                $campaign->save();
+                $item = (object)[];
+                if(filter_var($donation->email, FILTER_VALIDATE_EMAIL)){
+                    event(new NewDonatorHasRegisteredEvent($donation, $item));    
+                }
+                return response()->json(["success" => true, "message" => "Berhasil Merubah Status Pembayaran"]);
+            } catch(Exception $err){
+                return response()->json(["success" => false, "message" => $err]);
+            }
+        } else {
+            return response()->json(["success" => false, "message" => "Donasi Belum Terbayar"]);
         }
     }
 

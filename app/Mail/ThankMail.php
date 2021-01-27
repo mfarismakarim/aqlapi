@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class DonationMail extends Mailable
+class ThankMail extends Mailable
 {
     use Queueable, SerializesModels;
     public $data;
@@ -28,6 +28,6 @@ class DonationMail extends Mailable
      */
     public function build()
     {
-        return $this->subject('Menunggu Pembayaran Donasi Untuk '.$this->data['campaign'])->markdown('emails.donation');
+        return $this->subject('Terima Kasih, Donasi Anda Sudah Kami Terima')->markdown('emails.thank');
     }
 }
