@@ -109,8 +109,23 @@ class MainController extends Controller
         try {
             $donation->save();
             $campaign->save();
-            $item = (object)[];
+
+            //Update collected value on strapi database
+            $url = 'https://peaceful-meadow-45867.herokuapp.com/programs/'.$campaign->id;
+            $ch = curl_init($url);
+            $data = array(
+                'totalterkumpulProgram' => $campaign->collected
+            );
+            $payload = json_encode($data);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $result = curl_exec($ch);
+            curl_close($ch);
+
             if(filter_var($donation->email, FILTER_VALIDATE_EMAIL)){
+                $item = (object)[];
                 event(new NewDonatorHasRegisteredEvent($donation, $item));    
             }
             return response()->json(["success" => true, "message" => "Berhasil Merubah Status Pembayaran"]);
@@ -133,8 +148,23 @@ class MainController extends Controller
             try {
                 $donation->save();
                 $campaign->save();
-                $item = (object)[];
+
+                //Update collected value on strapi database
+                $url = 'https://peaceful-meadow-45867.herokuapp.com/programs/'.$campaign->id;
+                $ch = curl_init($url);
+                $data = array(
+                    'totalterkumpulProgram' => $campaign->collected
+                );
+                $payload = json_encode($data);
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+                curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                $result = curl_exec($ch);
+                curl_close($ch);
+                
                 if(filter_var($donation->email, FILTER_VALIDATE_EMAIL)){
+                    $item = (object)[];
                     event(new NewDonatorHasRegisteredEvent($donation, $item));    
                 }
                 return response()->json(["success" => true, "message" => "Berhasil Merubah Status Pembayaran"]);
@@ -257,8 +287,23 @@ class MainController extends Controller
         try {
             $donation->save();
             $campaign->save();
-            $item = (object)[];
+
+            //Update collected value on strapi database
+            $url = 'https://peaceful-meadow-45867.herokuapp.com/programs/'.$campaign->id;
+            $ch = curl_init($url);
+            $data = array(
+                'totalterkumpulProgram' => $campaign->collected
+            );
+            $payload = json_encode($data);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $result = curl_exec($ch);
+            curl_close($ch);
+
             if(filter_var($donation->email, FILTER_VALIDATE_EMAIL)){
+                $item = (object)[];
                 event(new NewDonatorHasRegisteredEvent($donation, $item));    
             }
             return response()->json(["success" => true, "message" => "Berhasil Merubah Status Pembayaran"]);
@@ -279,8 +324,23 @@ class MainController extends Controller
             try {
                 $donation->save();
                 $campaign->save();
-                $item = (object)[];
+
+                //Update collected value on strapi database
+                $url = 'https://peaceful-meadow-45867.herokuapp.com/programs/'.$campaign->id;
+                $ch = curl_init($url);
+                $data = array(
+                    'totalterkumpulProgram' => $campaign->collected
+                );
+                $payload = json_encode($data);
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+                curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                $result = curl_exec($ch);
+                curl_close($ch);
+                
                 if(filter_var($donation->email, FILTER_VALIDATE_EMAIL)){
+                    $item = (object)[];
                     event(new NewDonatorHasRegisteredEvent($donation, $item));    
                 }
                 return response()->json(["success" => true, "message" => "Berhasil Merubah Status Pembayaran"]);
