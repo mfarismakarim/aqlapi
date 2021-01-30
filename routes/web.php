@@ -84,6 +84,10 @@ $router->put('/setUnPaidDonation', 'MainController@setUnPaidDonation');
 $router->delete('/deleteDonation', 'MainController@deleteDonation');
 $router->delete('/deleteCampaign', 'MainController@deleteCampaign');
 
+$router->get('/getVolunteer', 'VolunteerController@getVolunteer');
+$router->post('/addVolunteer', 'VolunteerController@addVolunteer');
+$router->put('/editVolunteer', 'VolunteerController@editVolunteer');
+$router->delete('/deleteVolunteer', 'VolunteerController@deleteVolunteer');
 
 $router->post('/login', 'JwtController@login');
 $router->post('/save', 'JwtController@save');
@@ -101,4 +105,9 @@ $router->group(['middleware' => 'auth'], function ($router) {
     $router->put('/setUnPaidDonationAuth', 'MainController@setUnPaidDonationAuth');
     $router->delete('/deleteDonationAuth', 'MainController@deleteDonationAuth');
     $router->delete('/deleteCampaignAuth', 'MainController@deleteCampaignAuth');
+
+    $router->get('/getVolunteerAuth', 'VolunteerController@getVolunteerAuth');
+    $router->post('/addVolunteerAuth', 'VolunteerController@addVolunteerAuth');
+    $router->put('/editVolunteerAuth', 'VolunteerController@editVolunteerAuth');
+    $router->delete('/deleteVolunteerAuth', 'VolunteerController@deleteVolunteerAuth');
 }); 
