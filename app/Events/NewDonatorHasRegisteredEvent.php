@@ -1,20 +1,21 @@
 <?php
 
 namespace App\Events;
-use App\Models\Donation;
 
 class NewDonatorHasRegisteredEvent extends Event
 {
     public $donator;
-    public $payment;
+    public $secondParameter;
+    public $status;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(Donation $donator, $payment)
+    public function __construct($donator, $secondParameter, $status)
     {
         $this->donator = $donator;
-        $this->payment = $payment;
+        $this->secondParameter = $secondParameter;
+        $this->status = $status;
     }
 }

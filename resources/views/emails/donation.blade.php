@@ -1,5 +1,5 @@
 @component('mail::message', ['data' => $data])
-# Halo {{ $data['name'] }},
+# Assalamualaikum Wr Wb {{ $data['name'] }},
 
 Terima kasih sudah mau berdonasi untuk penggalangan {{ $data['campaign'] }}. Selanjutnya anda bisa melakukan transfer sebesar Rp {{ $data['amount'] }} ke:
 @foreach ($data['banks'] as $bank)
@@ -22,6 +22,6 @@ Atas nama: {{ $item['an'] }}<br>
 
 Anda juga dapat berdonasi untuk program kepedulian lainnya melalui aqlpeduli.or.id/kepedulian.
 
-Salam,<br>
+Wassalamualaikum Wr Wb,<br>
 {{ config('app.name') }}
 @endcomponent

@@ -1,5 +1,5 @@
 @component('mail::message')
-# Halo {{ $data['name'] }},
+# Assalamualaikum Wr Wb {{ $data['name'] }},
 
 Donasi Anda untuk kepedulian {{ $data['campaign'] }} telah kami terima sebesar Rp {{ $data['amount'] }}.
 
@@ -7,6 +7,6 @@ Terima kasih atas donasi yang telah diberikan, semoga menjadi amal jariyah dan m
 
 Yuk teruskan rantai kebaikan ini dengan mengajak teman Anda ikut berdonasi melalui aqlpeduli.or.id/kepedulian.
 
-Salam,<br>
+Wassalamualaikum Wr Wb,<br>
 {{ config('app.name') }}
 @endcomponent

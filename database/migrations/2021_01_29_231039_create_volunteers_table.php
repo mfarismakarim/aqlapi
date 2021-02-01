@@ -36,6 +36,7 @@ class CreateVolunteersTable extends Migration
             $table->string('motivasi')->nullable();
             $table->string('harapan')->nullable();
             $table->string('komitmen')->nullable();
+            $table->integer('state');
         });
     }
 

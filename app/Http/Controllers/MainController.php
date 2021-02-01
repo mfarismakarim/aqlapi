@@ -52,7 +52,7 @@ class MainController extends Controller
             $model->save();
             
             if(filter_var($model->email, FILTER_VALIDATE_EMAIL)){
-                event(new NewDonatorHasRegisteredEvent($model, $item));    
+                event(new NewDonatorHasRegisteredEvent($model, $item, 1));    
             }
             
             return response()->json(["success" => true, "message" => "Data Berhasil Disimpan"]);
@@ -126,7 +126,7 @@ class MainController extends Controller
 
             if(filter_var($donation->email, FILTER_VALIDATE_EMAIL)){
                 $item = (object)[];
-                event(new NewDonatorHasRegisteredEvent($donation, $item));    
+                event(new NewDonatorHasRegisteredEvent($donation, $item, 2));    
             }
             return response()->json(["success" => true, "message" => "Berhasil Merubah Status Pembayaran"]);
         } catch(Exception $err){
@@ -239,7 +239,7 @@ class MainController extends Controller
             $model->save();
 
             if(filter_var($model->email, FILTER_VALIDATE_EMAIL)){
-                event(new NewDonatorHasRegisteredEvent($model, $item));    
+                event(new NewDonatorHasRegisteredEvent($model, $item, 1));    
             }
             return response()->json(["success" => true, "message" => "Data Berhasil Disimpan"]);
         } catch(Exception $err){ 
@@ -304,7 +304,7 @@ class MainController extends Controller
 
             if(filter_var($donation->email, FILTER_VALIDATE_EMAIL)){
                 $item = (object)[];
-                event(new NewDonatorHasRegisteredEvent($donation, $item));    
+                event(new NewDonatorHasRegisteredEvent($donation, $item, 2));    
             }
             return response()->json(["success" => true, "message" => "Berhasil Merubah Status Pembayaran"]);
         } catch(Exception $err){

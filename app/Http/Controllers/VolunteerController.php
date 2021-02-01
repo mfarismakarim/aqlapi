@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewDonatorHasRegisteredEvent;
 use App\Models\Volunteer;
 use Illuminate\Http\Request;
 use Exception;
@@ -53,6 +54,7 @@ class VolunteerController extends Controller
         $model->motivasi = $request->get('motivasi', null);
         $model->harapan = $request->get('harapan', null);
         $model->komitmen = $request->get('komitmen', null);
+        $model->state = 0;
         try{
             $model->save();
             return response()->json(["success" => true, "message" => "Data Berhasil Disimpan"]);
@@ -89,6 +91,7 @@ class VolunteerController extends Controller
         if($request->get('motivasi') !== null) $model->motivasi = $request->get('motivasi');
         if($request->get('harapan') !== null) $model->harapan = $request->get('harapan');
         if($request->get('komitmen') !== null) $model->komitmen = $request->get('komitmen');
+        if($request->get('state') !== null) $model->state = $request->get('state');
         try{
             $model->save();
             return response()->json(["success" => true, "message" => "Data Berhasil Dirubah"]);
@@ -142,6 +145,7 @@ class VolunteerController extends Controller
         $model->motivasi = $request->get('motivasi', null);
         $model->harapan = $request->get('harapan', null);
         $model->komitmen = $request->get('komitmen', null);
+        $model->state = 0;
         try{
             $model->save();
             return response()->json(["success" => true, "message" => "Data Berhasil Disimpan"]);
@@ -176,6 +180,7 @@ class VolunteerController extends Controller
         if($request->get('motivasi') !== null) $model->motivasi = $request->get('motivasi');
         if($request->get('harapan') !== null) $model->harapan = $request->get('harapan');
         if($request->get('komitmen') !== null) $model->komitmen = $request->get('komitmen');
+        if($request->get('state') !== null) $model->state = $request->get('state');
         try{
             $model->save();
             return response()->json(["success" => true, "message" => "Data Berhasil Dirubah"]);
@@ -192,6 +197,25 @@ class VolunteerController extends Controller
         try{
             $model->delete();
             return response()->json(["success" => true, "message" => "Data Berhasil Dihapus"]);
+        } catch(Exception $err){
+            return response()->json(["success" => false, "message" => $err]);
+        }
+    }
+
+    public function volunteerEmailBlast(Request $request){
+        $token = $request->get('token', null);
+        if($token !== 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvbG9naW4iLCJpYXQiOjE2MTA0MjgzNzgsImV4cCI6MTYxMDQzMTk3OCwibmJmIjoxNjEwNDI4Mzc4LCJqdGkiOiJWSTFEZkVORjZWc3luNHB2Iiwic3ViIjoxMDAxLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.awgkdKJarKGTxP_0HIldNI7CnG_xtJoxnzhALuFGIPc') return response()->json('Unauthorized');
+        $allId = $request->get('allId', null);
+        $volunteers = Volunteer::select('id', 'namaPanggilan', 'email')->whereIn('id', $allId)->get();
+        $item = (object)[
+            "message" => $request->get('message', null),
+            "subject" => $request->get('subject', null)
+        ];
+        try{
+            foreach($volunteers as $volunteer){
+                event(new NewDonatorHasRegisteredEvent($volunteer, $item, 3));
+            } 
+            return response()->json(["success" => true, "message" => "Email Berhasil Dikirim"]);
         } catch(Exception $err){
             return response()->json(["success" => false, "message" => $err]);
         }

@@ -14,6 +14,7 @@
 */
 use App\Mail\ThankMail;
 use App\Mail\DonationMail;
+use App\Mail\CallingVolunteerMail;
 use App\Models\Campaign;
 use Illuminate\Support\Facades\Mail;
 
@@ -74,6 +75,23 @@ $router->get('/thankemail', function () use ($router){
     return new ThankMail($data); 
 });
 
+$router->get('/callingmail', function () use ($router){
+    $item = (object)[
+        "id_campaign" => 1,
+        "name" => "John",
+        "email" => "john@example.com",
+        "amount" => 250000,
+        "phone_number" => "082154567893"
+    ];
+    // $campaign_name = Campaign::find($item->id_campaign)->campaign_name;
+    $campaign_name = "(Bangun Istana Surga di Kp. Nanggewer  Terima kasih) <-- dinamis";
+    $data = [
+        'message' => $campaign_name,
+        'name' => $item->name
+    ];
+    return new CallingVolunteerMail($data); 
+});
+
 $router->get('/getPaidDonation', 'MainController@getPaidDonation');
 $router->get('/getDonation', 'MainController@getDonation');
 $router->get('/getCampaign', 'MainController@getCampaign');
@@ -88,6 +106,7 @@ $router->get('/getVolunteer', 'VolunteerController@getVolunteer');
 $router->post('/addVolunteer', 'VolunteerController@addVolunteer');
 $router->put('/editVolunteer', 'VolunteerController@editVolunteer');
 $router->delete('/deleteVolunteer', 'VolunteerController@deleteVolunteer');
+$router->post('/volunteerEmailBlast', 'VolunteerController@volunteerEmailBlast');
 
 $router->post('/login', 'JwtController@login');
 $router->post('/save', 'JwtController@save');
