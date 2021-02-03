@@ -45,6 +45,17 @@ return [
             'auth_mode' => null,
         ],
 
+        'admin' => [
+            'transport' => 'smtp',
+            'host' => env('MAIL_HOST', 'smtppro.zoho.com'),
+            'port' => env('MAIL_PORT', 465),
+            'encryption' => env('MAIL_ENCRYPTION', 'SSL'),
+            'username' => env('ADMIN_USERNAME'),
+            'password' => env('ADMIN_PASSWORD'),
+            'timeout' => null,
+            'auth_mode' => null,
+        ],
+
         'ses' => [
             'transport' => 'ses',
         ],

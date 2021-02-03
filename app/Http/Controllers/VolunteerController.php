@@ -118,7 +118,10 @@ class VolunteerController extends Controller
         ];
         try{
             foreach($volunteers as $volunteer){
-                event(new NewDonatorHasRegisteredEvent($volunteer, $item, 3));
+                if(filter_var($volunteer->email, FILTER_VALIDATE_EMAIL)){
+                    event(new NewDonatorHasRegisteredEvent($volunteer, $item, 3)); 
+                }
+                
             } 
             return response()->json(["success" => true, "message" => "Email Berhasil Dikirim"]);
         } catch(Exception $err){

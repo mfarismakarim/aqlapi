@@ -28,6 +28,6 @@ class CallingVolunteerMail extends Mailable
      */
     public function build()
     {
-        return $this->subject($this->data['subject'])->markdown('emails.calling');
+        return $this->from($address = 'admin@aqlpeduli.or.id', $name = 'Admin AQL Peduli')->subject($this->data['subject'])->markdown('emails.calling');
     }
 }
