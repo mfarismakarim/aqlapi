@@ -1,12 +1,19 @@
 @component('mail::message')
-# Assalamualaikum Wr Wb {{ $data['name'] }},
+# Jazaakallahu khair {{ $data['name'] }},
 
-Donasi Anda untuk kepedulian {{ $data['campaign'] }} telah kami terima sebesar Rp {{ $data['amount'] }}.
+Alhamdulillah Tabaarakallah, donasi kamu untuk kepedulian {{ $data['campaign'] }} telah kami terima sebesar Rp {{ $data['amount'] }}.
 
-Terima kasih atas donasi yang telah diberikan, semoga menjadi amal jariyah dan mendapat keberkahan atas apa yang Anda berikan.
+Terima kasih atas donasi Kepeduliannya. Semoga menjadi amal jariyah dan mendapat keberkahan atas apa yang anda berikan.
 
-Yuk teruskan rantai kebaikan ini dengan mengajak teman Anda ikut berdonasi melalui aqlpeduli.or.id/kepedulian.
+بارك الله لك في أهلك ومالك
 
-Wassalamualaikum Wr Wb,<br>
+Baarakallahu laka fii ahlika wa maalika
+
+"Semoga Allah memberkahimu dalam keluarga dan hartamu." (HR. Bukhari)
+
+Yuk.. teruskan rantai kebaikan ini dengan mengajak saudara/keluarga/teman ikut berdonasi melalui aqlpeduli.or.id/kepedulian.
+
+
+Wassalamu'alaikum,<br>
 {{ config('app.name') }}
 @endcomponent

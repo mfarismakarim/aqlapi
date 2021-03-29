@@ -1,7 +1,9 @@
 @component('mail::message', ['data' => $data])
-# Assalamualaikum Wr Wb {{ $data['name'] }},
+# Assalamualaikum {{ $data['name'] }},
 
-Terima kasih sudah mau berdonasi untuk penggalangan {{ $data['campaign'] }}. Selanjutnya anda bisa melakukan transfer sebesar Rp {{ $data['amount'] }} ke:
+Maa syaa Allah, terima kasih sudah mau berdonasi untuk penggalangan {{ $data['campaign'] }}. 
+
+Yuk lanjutkan kebaikan ini, dengan selanjutnya melakukan transfer sebesar Rp {{ $data['amount'] }} ke:
 @foreach ($data['banks'] as $bank)
 @php 
     $item = (array) $bank
@@ -18,10 +20,8 @@ Atas nama: {{ $item['an'] }}<br>
 
 <img src="{{$data['qrcode']}}" alt="qraqlpeduli" style="width:200px;height:200px;">
 
-<br> Untuk konfirmasi donasi dan jika ada pertanyaan lebih lanjut dapat langsung menghubungi kami di wa.me/6282239193515.
+<br> Untuk konfirmasi dan pertanyaan lebih lanjut dapat langsung menghubungi kami di wa.me/6282239193515.
 
-Anda juga dapat berdonasi untuk program kepedulian lainnya melalui aqlpeduli.or.id/kepedulian.
-
-Wassalamualaikum Wr Wb,<br>
+Wassalamualaikum,<br>
 {{ config('app.name') }}
 @endcomponent
